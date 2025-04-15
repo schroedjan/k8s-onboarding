@@ -1,0 +1,25 @@
+# Use a smaller base image from Arch Linux
+FROM docker.io/library/archlinux:latest
+
+# Install Node.js and npm
+RUN pacman -Sy --noconfirm nodejs npm && \
+    pacman -Scc --noconfirm
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the application code
+COPY main.js ./
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]
+

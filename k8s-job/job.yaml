@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: default
+  name: hello-world-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: hello-world
+          image: localhost:32000/hello-world-app:latest
+      restartPolicy: Never
+  backoffLimit: 1
