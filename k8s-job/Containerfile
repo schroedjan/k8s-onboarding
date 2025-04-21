@@ -1,8 +1,5 @@
 # Use an Arch Linux base image
-FROM docker.io/library/archlinux:latest
-
-# Install Node.js
-RUN pacman -Sy --noconfirm nodejs npm
+FROM docker.io/library/node:alpine
 
 # Copy the application code
 COPY main.js /app/main.js

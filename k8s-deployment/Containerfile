@@ -1,9 +1,5 @@
 # Use a smaller base image from Arch Linux
-FROM docker.io/library/archlinux:latest
-
-# Install Node.js and npm
-RUN pacman -Sy --noconfirm nodejs npm && \
-    pacman -Scc --noconfirm
+FROM docker.io/library/node:alpine
 
 # Set the working directory
 WORKDIR /app

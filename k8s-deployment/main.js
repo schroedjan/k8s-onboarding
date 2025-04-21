@@ -7,10 +7,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
+  console.log('Hello, beautiful World!');
   res.json({ message: 'Hello, beautiful World!', status: 'success' });
 });
 
 app.get('/hello/:username', (req, res) => {
+  console.log(`Hello, ${req.params.username}!`);
   const { username } = req.params;
   res.json({ message: `Hello, ${username}!`, status: 'success' });
 });
