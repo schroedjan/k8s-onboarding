@@ -4,13 +4,13 @@ This is a collection of Kubernetes resources and examples for learning and exper
 
 ## Table of Contents
 
-- [001 MicroK8s](./001_MicroK8s.md)
-- [002 First Pod](./002_First-Pod.md)
-- [003 Jobs](./003_Jobs.md)
-- [004 Deployment](./004_Deployment.md)
-- [005 KrakenD](./005_KrakenD.md)
-- [006 MicroK8s Further Topics](./006_MicroK8s_Further-Topics.md)
-- [007 Cluster Basics](./007_Cluster-Basics.md)
+- [010 Cluster Basics](./007_Cluster-Basics.md)
+- [021 MicroK8s](./001_MicroK8s.md)
+- [022 First Pod](./002_First-Pod.md)
+- [023 Jobs](./003_Jobs.md)
+- [024 Deployment](./004_Deployment.md)
+- [025 KrakenD](./005_KrakenD.md)
+- [031 MicroK8s Further Topics](./006_MicroK8s_Further-Topics.md)
 
 ## Further Reading
 - [Kubernetes Documentation](https://kubernetes.io/docs/home/)

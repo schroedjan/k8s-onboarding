@@ -60,4 +60,23 @@ sudo snap install k9s
 alias m8s=microk8s
 alias kubectl='microk8s kubectl'
 alias k=kubectl
+
+sudo apt update && sudo apt install -y podman
+```
+
+## Enable MicroK8s Addons
+
+```bash
+microk8s enable registry
+```
+
+## Create cluster config for kubectl
+```bash
+microk8s kubectl config view --raw > ~/.kube/config
+```
+
+
+## Set Kubernetes Context
+```bash
+kubectl config set-context microk8s
 ```
