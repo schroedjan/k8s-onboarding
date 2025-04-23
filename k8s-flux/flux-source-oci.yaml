@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: kuard
+  namespace: flux-system
+spec:
+  insecure: true
+  interval: 1m0s
+  provider: generic
+  ref:
+    tag: blue
+  url: oci://gcr.io/kuar-demo/kuard-amd64
