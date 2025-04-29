@@ -1,0 +1,62 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: hello-world-service
+spec:
+  http:
+  - name: default
+    match:
+      hosts:
+      - local.hello-world.com
+      paths:
+      - /*
+    backends:
+       - serviceName: hello-world-service-headless
+         servicePort: 3000
+    plugins:
+      - name: proxy-rewrite
+        enable: true
+        config:
+          uri: "/"
+  - name: hello
+    match:
+      hosts:
+      - local.hello-world.com
+      paths:
+      - /api/v1/hello
+    backends:
+       - serviceName: hello-world-service-headless
+         servicePort: 3000
+    plugins:
+      - name: proxy-rewrite
+        enable: true
+        config:
+          uri: "/hello"
+  - name: hello-world
+    match:
+      hosts:
+      - local.hello-world.com
+      paths:
+      - "/api/v1/hello/*"
+    backends:
+       - serviceName: hello-world-service-headless
+         servicePort: 3000
+    plugins:
+      - name: proxy-rewrite
+        enable: true
+        config:
+          uri: "/hello/$1"
+  - name: error
+    match:
+      hosts:
+      - local.hello-world.com
+      paths:
+      - /api/v1/error
+    backends:
+       - serviceName: hello-world-service-headless
+         servicePort: 3000
+    plugins:
+      - name: proxy-rewrite
+        enable: true
+        config:
+          uri: "/error"
