@@ -1,0 +1,49 @@
+{
+    "$schema": "https://www.krakend.io/schema/v2.9/krakend.json",
+    "version": 3,
+    "endpoints": [
+        {
+            "endpoint": "/api/v1/",
+            "method": "GET",
+            "backend": [
+                {
+                    "url_pattern": "/",
+                    "host": [
+                        "http://hello-world-service-headless:3000"
+                    ]
+                }
+            ]
+        },
+                {
+            "endpoint": "/api/v1/hello",
+            "method": "GET",
+            "backend": [
+                {
+                    "url_pattern": "/hello",
+                    "host": [
+                        "http://hello-world-service:3000"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/api/v1/hello/{name}",
+            "method": "GET",
+            "backend": [
+                {
+                    "url_pattern": "/hello/{name}",
+                    "host": [
+                        "http://hello-world-service:3000"
+                    ]
+                }
+            ]
+        }
+    ],
+    "extra_config": {
+        "telemetry/logging": {
+            "level": "WARNING",
+            "syslog": true,
+            "stdout": true
+          }
+      }
+}
