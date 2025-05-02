@@ -4,5 +4,6 @@ resources:
   - deployment.yaml
 configMapGenerator:
 - name: krakend-config
+  namespace: api-gateway
   files:
   - krakend.json
