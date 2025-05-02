@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: endpoint-config
+  namespace: application
+  labels:
+    api-gateway: icp
+data:
+  krakend.json: |
+    {
+      "endpoints": [
+        {
+          "endpoint": "/api/v1/hello",
+          "method": "GET",
+          "backend": [
+            {
+              "url_pattern": "/hello",
+              "host": [
+                "http://hello-world-service:3000"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: endpoint2-config
+  namespace: application
+  labels:
+    api-gateway: icp
+data:
+  krakend.json: |
+    {
+      "endpoints": [
+        {
+          "endpoint": "/api/v1/hello",
+          "method": "GET",
+          "backend": [
+            {
+              "url_pattern": "/hello",
+              "host": [
+                "http://hello-world-service:3000"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+

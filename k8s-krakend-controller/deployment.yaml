@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krakend-config-controller
+  namespace: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: krakend-config-controller
+  template:
+    metadata:
+      labels:
+        app: krakend-config-controller
+    spec:
+      containers:
+        - name: controller
+          image: localhost:32000/krakend-config-controller:latest
+          imagePullPolicy: Always
+          env:
+            - name: NODE_ENV
+              value: production
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

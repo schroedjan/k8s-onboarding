@@ -1,0 +1,12 @@
+{
+  "name": "k8s-krakend-controller",
+  "version": "1.0.0",
+  "description": "A custom Kubernetes controller for krakend",
+  "main": "controller.js",
+  "scripts": {
+    "start": "node controller.js"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^0.18.1"
+  }
+}
