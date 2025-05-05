@@ -9,6 +9,7 @@ A custom Kubernetes controller to manage KrakenD Config. It enables the user to 
 ```
 
 ## Create the K8s resources
+
 ```bash
 kubectl apply -f crd.yaml
 
@@ -17,8 +18,10 @@ kubectl apply -f deployment.yaml
 
 ## Create the custom resource
 
-
 ```bash
 kubectl apply -f endpoint.yaml
 ```
+
+```
+
 ```
