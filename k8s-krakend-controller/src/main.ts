@@ -3,16 +3,17 @@ import {
   Watch,
   V1ConfigMap,
 } from '@kubernetes/client-node'
-import { reconcileConfigMap } from './controller'
-import { getKubeConfig } from './config'
+import { initConfigMap, updateIndexKey, triggerRollingUpdate, handleConfigMapAdded, handleConfigMapDeleted } from './controller'
+import { getConfig, getKubeConfig } from './config'
+
+// Initialize Controller
+console.log('Starting Kubernetes ConfigMap Controller')
+initConfigMap()
 
 // Load Kubernetes configuration
-const kc: KubeConfig = getKubeConfig()
-
-const watch = new Watch(kc)
-
+const watch = new Watch(getKubeConfig())
+const labelSelector = getConfig().labelSelector
 // Label selector for ConfigMaps
-const labelSelector = 'api-gateway=icp'
 // Start watching for ConfigMap changes
 watch.watch(
   `/api/v1/configmaps`,
@@ -20,9 +21,14 @@ watch.watch(
   async (type: string, obj: V1ConfigMap) => {
     console.log(`Event type: ${type}`)
     if (type === 'ADDED' || type === 'MODIFIED') {
-      await reconcileConfigMap(obj)
+      await handleConfigMapAdded(obj)
+      await updateIndexKey()
+      await triggerRollingUpdate()
+
     } else if (type === 'DELETED') {
-      console.log(`ConfigMap deleted: ${obj.metadata?.name}`)
+      await handleConfigMapDeleted(obj)
+      await updateIndexKey()
+      await triggerRollingUpdate()
     }
   },
   (err: unknown) => {

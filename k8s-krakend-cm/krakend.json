@@ -1,7 +1,9 @@
 {
     "$schema": "https://www.krakend.io/schema/v2.9/krakend.json",
     "version": 3,
-    "endpoints": [],
+    "endpoints": [
+      {{- template "endpoints.tmpl" . -}}
+    ],
     "extra_config": {
       "telemetry/logging": {
         "level": "DEBUG",

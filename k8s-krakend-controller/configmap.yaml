@@ -1,24 +1,42 @@
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: endpoint3-config
+#   namespace: default
+#   labels:
+#     api-gateway: icp
+# data:
+#   krakend.json: |
+#     {
+#       "endpoint": "/hallo",
+#       "method": "GET",
+#       "backend": [
+#         {
+#           "url_pattern": "/hello",
+#           "host": [
+#             "http://hello-world-service.application.svc.cluster.local:3000"
+#           ]
+#         }
+#       ]
+#     }
+# ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: endpoint-config
-  namespace: application
+  namespace: default
   labels:
     api-gateway: icp
 data:
   krakend.json: |
     {
-      "endpoints": [
+      "endpoint": "/error",
+      "method": "GET",
+      "backend": [
         {
-          "endpoint": "/api/v1/hello",
-          "method": "GET",
-          "backend": [
-            {
-              "url_pattern": "/hello",
-              "host": [
-                "http://hello-world-service:3000"
-              ]
-            }
+          "url_pattern": "/error",
+          "host": [
+            "http://hello-world-service.application.svc.cluster.local:3000"
           ]
         }
       ]
@@ -34,18 +52,38 @@ metadata:
 data:
   krakend.json: |
     {
-      "endpoints": [
-        {
-          "endpoint": "/api/v1/hello",
-          "method": "GET",
-          "backend": [
+        "endpoint": "/api/v1/",
+        "method": "GET",
+        "backend": [
             {
-              "url_pattern": "/hello",
-              "host": [
-                "http://hello-world-service:3000"
-              ]
+                "url_pattern": "/",
+                "host": [
+                    "http://hello-world-service.application.svc.cluster.local:3000"
+                ]
             }
-          ]
-        }
-      ]
+        ]
+    },
+            {
+        "endpoint": "/api/v1/hello",
+        "method": "GET",
+        "backend": [
+            {
+                "url_pattern": "/hello",
+                "host": [
+                    "http://hello-world-service.application.svc.cluster.local:3000"
+                ]
+            }
+        ]
+    },
+    {
+        "endpoint": "/api/v1/hello/{name}",
+        "method": "GET",
+        "backend": [
+            {
+                "url_pattern": "/hello/{name}",
+                "host": [
+                    "http://hello-world-service.application.svc.cluster.local:3000"
+                ]
+            }
+        ]
     }

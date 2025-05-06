@@ -22,9 +22,9 @@ spec:
         - name: krakend-config
           configMap:
             name: krakend-config
-        - name: krakend-partials
+        - name: krakend-templates
           configMap:
-            name: krakend-partials
+            name: krakend-templates
         - name: tmp
           emptyDir: {}
       containers:
@@ -35,8 +35,8 @@ spec:
         volumeMounts:
         - name: krakend-config
           mountPath: /etc/krakend
-        - name: krakend-partials
-          mountPath: /etc/krakend/partials
+        - name: krakend-templates
+          mountPath: /etc/krakend/templates
         - name: tmp
           mountPath: /tmp
         command: [ "/usr/bin/krakend" ]
@@ -61,10 +61,10 @@ spec:
         env:
         # - name: "FC_SETTINGS"
         #   value: "/etc/krakend/config/settings/test"
-        # - name: "FC_TEMPLATES"
-        #   value: "/etc/krakend/config/templates"
-        - name: "FC_PARTIALS"
-          value: "/etc/krakend/config/partials"
+        # - name: "FC_PARTIALS"
+        #   value: "/etc/krakend/partials"
+        - name: "FC_TEMPLATES"
+          value: "/etc/krakend/templates"
         - name: FC_ENABLE
           value: "1"
         - name: KRAKEND_PORT
