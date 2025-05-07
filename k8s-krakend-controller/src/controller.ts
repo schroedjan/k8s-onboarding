@@ -202,43 +202,57 @@ export async function updateIndexKey() {
  *
  **/
 export async function triggerRollingUpdate() {
-  const v1AppsApi: AppsV1Api = getApiClient(AppsV1Api)
-  const deploymentName = getConfig().gatewayDeploymentName
-  const namespace = getConfig().gatewayDeploymentNamespace
+  const v1AppsApi: AppsV1Api = getApiClient(AppsV1Api);
+  const deploymentName = getConfig().gatewayDeploymentName;
+  const namespace = getConfig().gatewayDeploymentNamespace;
+  const maxRetries = getConfig().templatesRollingUpdateMaxRetries ?? 5;
+  const backoffDelay = getConfig().templatesRollingUpdateBackoffDelay ?? 1000;
 
-  try {
-    // Get the current deployment
-    const deployment = await v1AppsApi.readNamespacedDeployment
-      ({
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // Fetch the latest version of the deployment
+      const deploymentResponse = await v1AppsApi.readNamespacedDeployment({
         name: deploymentName,
         namespace: namespace
-      })
+      });
+      const deployment = deploymentResponse;
 
-    // Ensure deployment.spec is defined
-    if (!deployment.spec) {
-      throw new Error(`Deployment ${deploymentName} is missing the required 'spec' field.`)
-    }
+      // Ensure deployment.spec is defined
+      if (!deployment.spec || !deployment.spec.template.metadata) {
+        throw new Error(`Deployment ${deploymentName} is missing required fields.`);
+      }
 
-    if (deployment.spec.template.metadata) {
       // Add or update the 'kubectl.kubernetes.io/restartedAt' annotation
       deployment.spec.template.metadata.annotations = {
         ...deployment.spec.template.metadata.annotations,
         'kubectl.kubernetes.io/restartedAt': new Date().toISOString(),
-      }
+      };
 
-      // Update the deployment
+      // Update the deployment with the latest resourceVersion
       await v1AppsApi.replaceNamespacedDeployment({
-        body: deployment,
+        body: {
+          ...deployment,
+          metadata: {
+            ...deployment.metadata,
+            resourceVersion: deployment.metadata?.resourceVersion
+          }
+        },
         name: deploymentName,
-        namespace: namespace
-      })
-      console.log(`Triggered rolling update for deployment ${deploymentName}.`)
-    } else {
-      throw new Error(`Deployment ${deploymentName} is missing required fields in 'spec.template.metadata'.`)
+        namespace: namespace,
+      });
+      console.log(`Triggered rolling update for deployment ${deploymentName}.`);
+      return; // Exit the function if the update succeeds
+    } catch (error) {
+      console.error(`Attempt ${attempt} failed: ${error.message}`);
+      if (attempt < maxRetries) {
+        const delay = backoffDelay * Math.pow(2, attempt - 1); // Exponential backoff
+        console.log(`Retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        console.error('Max retries reached. Failed to trigger rolling update.');
+        throw error;
+      }
     }
-  } catch (error) {
-    console.error(`Failed to trigger rolling update: ${error.message}`)
-    throw error
   }
 }
 

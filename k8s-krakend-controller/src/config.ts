@@ -14,10 +14,14 @@ interface ControllerConfig {
   templatesConfigMapNamespace: string;
   /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_INDEX_KEY) */
   templatesIndexKey: string;
-  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_INDEX_KEY) */
+  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_INDEX_MAX_RETRIES) */
   templatesIndexMaxRetries?: number;
-  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_INDEX_KEY) */
+  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_INDEX_BACKOFF_DELAY) */
   templatesIndexBackoffDelay?: number;
+  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_ROLLING_UPDATES_MAX_RETRIES) */
+  templatesRollingUpdateMaxRetries?: number;
+  /** Key in the ConfigMap containing KrakenD summarized include directives (env: TEMPLATES_ROLLING_UPDATES_BACKOFF_DELAY) */
+  templatesRollingUpdateBackoffDelay?: number;
   /** Name of the Gateway deployment (env: GATEWAY_DEPLOYMENT_NAME) */
   gatewayDeploymentName: string;
   /** Namespace of the Gateway deployment (env: GATEWAY_DEPLOYMENT_NAMESPACE) */
@@ -35,8 +39,10 @@ function loadConfig(): ControllerConfig {
     templatesConfigMapName: process.env.TEMPLATES_CONFIGMAP_NAME ?? 'krakend-templates',
     templatesConfigMapNamespace: process.env.TEMPLATES_CONFIGMAP_NAMESPACE ?? 'api-gateway',
     templatesIndexKey: process.env.TEMPLATES_INDEX_KEY ?? 'endpoints.tmpl',
-    templatesIndexMaxRetries: parseInt(process.env.TEMPLATES_INDEX_MAX_RETRIES ?? '5', 10) ?? 5,
+    templatesIndexMaxRetries: parseInt(process.env.TEMPLATES_INDEX_MAX_RETRIES ?? '15', 10) ?? 15,
     templatesIndexBackoffDelay: parseInt(process.env.TEMPLATES_INDEX_BACKOFF_DELAY ?? '1000', 10) ?? 1000,
+    templatesRollingUpdateMaxRetries: parseInt(process.env.TEMPLATES_ROLLING_UPDATES_MAX_RETRIES ?? '15', 10) ?? 15,
+    templatesRollingUpdateBackoffDelay: parseInt(process.env.TEMPLATES_ROLLING_UPDATES_BACKOFF_DELAY ?? '1000', 10) ?? 1000,
     gatewayDeploymentName: process.env.GATEWAY_DEPLOYMENT_NAME ?? 'api-gateway',
     gatewayDeploymentNamespace: process.env.GATEWAY_DEPLOYMENT_NAMESPACE ?? 'api-gateway',
     labelSelector: process.env.LABEL_SELECTOR ?? 'api-gateway=icp',
