@@ -1,7 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: krakend-config
+  namespace: application
+  labels:
+    app: krakend
+data:
+  krakend.json: |
+    {
+      "$schema": "https://www.krakend.io/schema/v2.9/krakend.json",
+      "version": 3,
+      "endpoints": [
+          {
+              "endpoint": "/api/v1/",
+              "method": "GET",
+              "backend": [
+                  {
+                      "url_pattern": "/",
+                      "host": [
+                          "http://hello-world-service:3000"
+                      ]
+                  }
+              ]
+          },
+          {
+              "endpoint": "/api/v1/hello",
+              "method": "GET",
+              "backend": [
+                  {
+                      "url_pattern": "/hello",
+                      "host": [
+                          "http://hello-world-service:3000"
+                      ]
+                  }
+              ]
+          },
+          {
+              "endpoint": "/api/v1/hello/{name}",
+              "method": "GET",
+              "backend": [
+                  {
+                      "url_pattern": "/hello/{name}",
+                      "host": [
+                          "http://hello-world-service:3000"
+                      ]
+                  }
+              ]
+          }
+      ],
+      "extra_config": {
+          "telemetry/logging": {
+              "level": "WARNING",
+              "syslog": true,
+              "stdout": true
+            }
+        }
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: krakend
+  namespace: application
 spec:
   selector:
     matchLabels:
@@ -12,13 +72,20 @@ spec:
       labels:
         app: krakend
     spec:
+      volumes:
+        - name: krakend-config
+          configMap:
+            name: krakend-config
       containers:
       - name: krakend
-        image: localhost:32000/krakend:latest
+        image: krakend:2.9
         ports:
         - containerPort: 8080
         command: [ "/usr/bin/krakend" ]
         args: [ "run", "-d", "-c", "/etc/krakend/krakend.json", "-p", "8080" ]
+        volumeMounts:
+        - name: krakend-config
+          mountPath: /etc/krakend
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -37,6 +104,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: krakend
+  namespace: application
 spec:
   type: NodePort
   ports:
