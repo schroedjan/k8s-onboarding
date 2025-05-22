@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: crossplane-aws-resources
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-aws
+  namespace: crossplane-aws-resources
+spec:
+  package: xpkg.crossplane.io/crossplane-contrib/provider-aws:v0.52.5
+  packagePullPolicy: Always
+---
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: aws
+  namespace: crossplane-aws-resources
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-aws-resources
+      name: aws-credentials
+      key: creds

@@ -12,6 +12,7 @@ This is a collection of Kubernetes resources and examples for learning and exper
 - [024 Deployment](./024_Deployment.md)
 - [025 KrakenD](./025_KrakenD.md)
 - [026 KNative](./026_KNative.md)
+- [028 CrossPlane](./028_CrossPlane.md)
 - [031 MicroK8s Further Topics](./031_MicroK8s_Further-Topics.md)
 
 ## Further Reading

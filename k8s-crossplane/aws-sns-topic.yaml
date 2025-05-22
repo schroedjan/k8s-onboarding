@@ -1,0 +1,15 @@
+apiVersion: sns.aws.crossplane.io/v1beta1
+kind: Topic
+metadata:
+  name: example-topic
+  namespace: crossplane-aws-resources
+spec:
+  forProvider:
+    region: eu-west-1
+    name: example-topic
+    tags:
+    - key: managed-by
+      value: crossplane
+    displayName: example-topic
+  providerConfigRef:
+    name: aws
