@@ -4,7 +4,7 @@ set -e
 
 # Defaults
 SECRET_NAME="aws-credentials"
-NAMESPACE="crossplane-aws-resources"
+NAMESPACE=""
 AWS_PROFILE="${AWS_PROFILE:-default}"
 ROLE_NAME="icp/maintainer"
 
@@ -32,11 +32,21 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     *)
-      echo "Usage: $0 [--secret-name name] [--namespace ns] [--aws-profile profile] [--role-name name]"
+      echo "Usage: $0 [--secret-name name] --namespace ns [--aws-profile profile] [--role-name name]"
       exit 1
       ;;
   esac
 done
+
+# Check if namespace is provided, if not set a default
+if [ -z "$NAMESPACE" ]; then
+  # Read namespace from kubectl default
+  NAMESPACE=$(kubectl config view --minify -o jsonpath='{..namespace}')
+  if [ -z "$NAMESPACE" ]; then
+    echo "Error: No namespace provided and no default namespace found in kubectl config."
+    exit 1
+  fi
+fi
 
 # print paramater values for debug
 echo "Secret Name: $SECRET_NAME"

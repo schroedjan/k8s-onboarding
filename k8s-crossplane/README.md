@@ -25,10 +25,10 @@ helm install crossplane --namespace crossplane-system --create-namespace crosspl
 kubectl apply -f aws-provider.yaml
 ```
 
-4. create temporary credentials. You can use the given `get-aws-credentials.sh` script to create temporary credentials. This will assume the given role with the aws cli and store the credentials in a kubernetes secret. The secret is already configured to be used by the crossplane provider. You can rerun the script to update the credentials at any time.
+4. create temporary credentials. You can use the given `get-aws-creds.sh` script to create temporary credentials. This will assume the given role with the aws cli and store the credentials in a kubernetes secret. The secret is already configured to be used by the crossplane provider. You can rerun the script to update the credentials at any time.
 
 ```bash
-./get-aws-credentials.sh -r <role-name:-icp/maintainer> -p <aws-profile:-default>
+../scripts/get-aws-creds.sh -r <role-name:-icp/maintainer> -ns crossplane-aws-resources -p <aws-profile:-default>
 ```
 
 5. create the aws resource. See the example in `aws-sns-topic.yaml`:
