@@ -43,7 +43,7 @@ You can install a WSL distribution of your choice. For this guide, we will use U
 
 ```powershell
 wsl --install Ubuntu --location c:\dev\wsl\k8s --name k8s
-wsl start -d k8s
+wsl -d k8s
 > Provisioning the new WSL instance k8s
 > This might take a while...
 > Create a default Unix user account: <myusername>
