@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     -r|--role-name)
-      ROLE_ARN="$2"
+      ROLE_NAME="$2"
       shift
       shift
       ;;
