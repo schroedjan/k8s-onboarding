@@ -12,16 +12,16 @@ You need to have worked through the following tutorials:
 
 ## Installation
 
-To make sure the application can access AWS resources, you need to create temporary credentials. This can be done by running the following command:
-
-```bash
-../scripts/get-aws-creds.sh -r <role-name:-icp/maintainer> -ns application-aws -p <aws-profile:-default>
-```
-
 Build and deploy the application by running:
 
 ```bash
 ./deploy.sh
+```
+
+To make sure the application can access AWS resources, you need to create temporary credentials. This can be done by running the following command:
+
+```bash
+../scripts/get-aws-creds.sh -r <role-name:-icp/maintainer> -ns application-aws -p <aws-profile:-default>
 ```
 
 ## Accessing the application
